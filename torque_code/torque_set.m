@@ -25,6 +25,9 @@ for i = 1:length(Aims)
     disp(imname)
 
     im1_double = imread(imname); 
+
+    %figure;
+    %imshow(im1_double)
     
     %figure;
     %imshow(im1_double)
@@ -54,7 +57,7 @@ for i = 1:length(Aims)
 
     %thresh = [.2,.4];    % adjust thresh
     thresh = cell2mat(canny_thresholds)
-    edges = computeCannyEdge( im, thresh );
+    edges = computeCannyEdge( im, thresh , resize_factor );
 
     % compute torque maps
     %patchList = (3:2:45)';
@@ -86,9 +89,9 @@ for i = 1:length(Aims)
 
     % image
     
-    figure;
+    %figure;
     %subplot(1,2,1);
-    imshow( imresize(im,(1/resize_factor)) );
+    %imshow( imresize(im,(1/resize_factor)) );
  %   title( 'test image' );
   
 
@@ -100,32 +103,49 @@ for i = 1:length(Aims)
     else
         valueMapMax = -valueMapMin;
     end
-    figure;
-  %  subplot(1,2,2);
+
+    figure(2);
+    %subplot(1,2,2);
     valueMap_display = valueMap/(valueMapMax- valueMapMin)+ (-valueMapMin);
-    %imagesc(imresize(valueMap_display,2));
     imagesc(imresize(valueMap,(1/resize_factor)));
     axis image; axis off; colormap jet
-    hold on
+    %hold on
+
+    figure(3);
+    imshow(imresize(im,(1/resize_factor)))
+    %hold on
+
 %     for j=1:3%size( torqueMaxValueMap, 1 )
 %          plot( torqueMaxValueMap(j,2), torqueMaxValueMap(j,1), 'wx', 'markersize', 11, 'linewidth', 3 );
 %      end
     for j=1:num_fix_points  %size( torqueMinValueMap, 1 )
+
+        figure(2);
+        hold on;
         plot( torqueMinValueMap(j,2)*(1/resize_factor), torqueMinValueMap(j,1)*(1/resize_factor), 'kx', 'markersize', 11, 'linewidth', 3 );
+        plot( torqueMaxValueMap(j,2)*(1/resize_factor), torqueMaxValueMap(j,1)*(1/resize_factor), 'w*', 'markersize', 11, 'linewidth', 3 );
+        hold off;
+
+        figure(3);
+        hold on;
+        plot( torqueMinValueMap(j,2)*(1/resize_factor), torqueMinValueMap(j,1)*(1/resize_factor), 'kx', 'markersize', 11, 'linewidth', 3 );
+        plot( torqueMaxValueMap(j,2)*(1/resize_factor), torqueMaxValueMap(j,1)*(1/resize_factor), 'w*', 'markersize', 11, 'linewidth', 3 );
+        hold off;
+
         fixation_points((i-1)*num_fix_points + j, 2) = torqueMinValueMap(j,2)*(1/resize_factor);
         fixation_points((i-1)*num_fix_points + j, 1) = torqueMinValueMap(j,1)*(1/resize_factor);
     end
-   title( 'value map with extrema: black x is negative' );
+   title( 'value map with extrema: black x is negative, white * is positive' );
 
     %stregthened edges
-    figure;
-    imagesc(  sum(edgeContMaximum,3), [0,max(max(sum(edgeContMaximum,3)))] );
-    axis image; axis off; colormap gray
+    %figure;
+    %imagesc(  sum(edgeContMaximum,3), [0,max(max(sum(edgeContMaximum,3)))] );
+    %axis image; axis off; colormap gray
  %   title( 'strengthened edges by positive torque' );
 
-    figure;
-    imagesc( -sum(edgeContMinimum,3), [0,max(max(sum(-edgeContMinimum,3)))]  );
-    axis image; axis off; colormap gray
+    %figure;
+    %imagesc( -sum(edgeContMinimum,3), [0,max(max(sum(-edgeContMinimum,3)))]  );
+    %axis image; axis off; colormap gray
  %   title( 'strengthened edges by negative torque' );
  
 end;

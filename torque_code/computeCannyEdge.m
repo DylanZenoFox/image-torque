@@ -1,10 +1,10 @@
-function edges = computeCannyEdge( im, thresh, sigma )
+function edges = computeCannyEdge( im, thresh,resize, sigma)
 %
     if nargin < 2
         thresh = [];
     end
     
-    if nargin < 3
+    if nargin < 4
         sigma = 1;
     end
         
@@ -12,7 +12,7 @@ function edges = computeCannyEdge( im, thresh, sigma )
     imGray = double(imGray)/255;
 
     edgeS = edge( imGray,'canny', thresh, sigma );
-    figure; imshow(imresize(edgeS,1.5));
+    figure(1); imshow(imresize(edgeS,(1/resize)));
     % compute edge direction
     sig = 0.5;
     delt = 1e-5;

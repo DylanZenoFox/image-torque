@@ -8,8 +8,8 @@ def main():
 	Parser.add_argument('--NumExtrema', default="5",type= int, help='Number of torque extrema points to extract from image, default: 5')
 	Parser.add_argument('--ResizeFactor', default="0.5",type = float, help='Factor to resize image before torque is computed, if tuple is given, default = 0.5')
 	Parser.add_argument('--TorqueSizes', default="3:45:5", help='Range of sizes for torque operator patches, must be of form min:max:step_size, default = 3:45:5')
-	Parser.add_argument('--CannyThresholdLow', default="0.2",type= float, help='Value of lower canny edge detection threshold, default: 0.2')
-	Parser.add_argument('--CannyThresholdHigh', default="0.4",type= float, help='Value of higher canny edge detection threshold, default: 0.4')
+	Parser.add_argument('--CannyThresholdLow', default="0.2",type= float, help='Value of lower canny edge detection threshold, default: 0.1')
+	Parser.add_argument('--CannyThresholdHigh', default="0.4",type= float, help='Value of higher canny edge detection threshold, default: 0.3')
 
 
 
